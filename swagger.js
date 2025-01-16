@@ -11,7 +11,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:5000', // Replace with your base URL
+        url: 'http://localhost:8080', // Replace with your base URL
       },
       {
         url: 'https://aimortgagebe.onrender.com/'

@@ -1,6 +1,6 @@
 const Users = require("../models/userModel");
 const generateOtp = require('../utils/generateOTP');
-const sendEmail = require('../utils/sendEmail');
+// const sendEmail = require('../utils/sendEmail');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -13,11 +13,11 @@ exports.signupUser = async (req, res) => {
 
     try {
         //check if email exists in DB
-        let user = await User.findOne({ email });
+        let user = await Users.findOne({ email });
         if (user) return res.status(400).json({ msg: 'User already exists' });
         //email does not exist
         let hashPassword = await bcrypt.hash(password, 10);
-        user = new User({
+        user = new Users({
             role,
             firstName,
             lastName,
@@ -30,7 +30,7 @@ exports.signupUser = async (req, res) => {
 
         await user.save();
 
-        await sendEmail(user.email, 'OTP Verification', `Your OTP is ${user.signupOTP}`);
+        // await sendEmail(user.email, 'OTP Verification', `Your OTP is ${user.signupOTP}`);
 
         res.status(200).json({ msg: 'Registration successful, OTP sent to your email' });
     } catch (error) {
@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await Users.findOne({ email });
         if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -73,7 +73,7 @@ exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await Users.findOne({ email });
         if (!user) return res.status(400).json({ msg: 'User not found' });
 
         user.otp = generateOtp();
@@ -81,7 +81,7 @@ exports.forgotPassword = async (req, res) => {
 
         await user.save();
 
-        await sendEmail(user.email, 'Password Reset OTP', `Your OTP is ${user.otp}`);
+        // await sendEmail(user.email, 'Password Reset OTP', `Your OTP is ${user.otp}`);
 
         res.status(200).json({ msg: 'OTP sent to your email' });
     } catch (error) {
@@ -93,7 +93,7 @@ exports.resetPassword = async (req, res) => {
     const { email, otp, newPassword } = req.body;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await Users.findOne({ email });
         if (!user || user.otp !== otp) return res.status(400).json({ msg: 'Invalid OTP' });
 
         user.password = newPassword;
@@ -110,7 +110,7 @@ exports.resendOtp = async (req, res) => {
     const { email } = req.params;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await Users.findOne({ email });
         if (!user) return res.status(400).json({ msg: 'User not found' });
 
         if (!user.isVerified) {
@@ -118,7 +118,7 @@ exports.resendOtp = async (req, res) => {
             user.otpCreatedAt = new Date();
             await user.save();
 
-            await sendEmail(user.email, 'OTP Verification', `Your new OTP is ${user.otp}`);
+            // await sendEmail(user.email, 'OTP Verification', `Your new OTP is ${user.otp}`);
 
             res.status(200).json({ msg: 'New OTP sent to your email' });
         } else {
@@ -131,7 +131,7 @@ exports.resendOtp = async (req, res) => {
 
 exports.getUserDetails = async (req, res) => {
     try {
-        const users = await User.find({}, 'fullName email');
+        const users = await Users.find({}, 'fullName email');
         res.status(200).json(users);
     } catch (error) {
         console.error('Error fetching user details:', error);
@@ -143,7 +143,7 @@ exports.updateProfile = async (req, res) => {
     const { fullName, email } = req.body;
     const userId = req.user.id;
     try {
-        const user = await User.findById(userId);
+        const user = await Users.findById(userId);
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
@@ -166,7 +166,7 @@ exports.changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const userId = req.user.id;
     try {
-        const user = await User.findById(userId);
+        const user = await Users.findById(userId);
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
