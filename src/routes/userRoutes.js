@@ -13,10 +13,10 @@ const userRoutes = express.Router();
  *         description: A list of users.
  */
 userRoutes.post("signup-user", userController.signupUser);
-userRoutes.post("signin-user", userController.login);
-userRoutes.post('/verify-otp', userController.verifyOtp);
-userRoutes.post('/forgot-password', userController.forgotPassword);
-userRoutes.post('/reset-password', userController.resetPassword);
+// userRoutes.post("signin-user", userController.login);
+// userRoutes.post('/verify-otp', userController.verifyOtp);
+// userRoutes.post('/forgot-password', userController.forgotPassword);
+// userRoutes.post('/reset-password', userController.resetPassword);
 userRoutes.get('/resend-otp/:email', userController.resendOtp);
 userRoutes.get('/users', userController.getUserDetails);
 // userRoutes.patch('/update-profile', protect, userController.updateProfile);
