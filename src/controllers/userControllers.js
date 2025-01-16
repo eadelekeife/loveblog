@@ -5,11 +5,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.signupUser = async (req, res) => {
-    const { role, firstName, lastName, email, password, confirmPassword } = req.body;
+    const { role, firstName, lastName, email, password } = req.body;
 
-    if (password !== confirmPassword) {
-        return res.status(400).json({ msg: 'Passwords do not match' });
-    }
+    // if (password !== confirmPassword) {
+    //     return res.status(400).json({ msg: 'Passwords do not match' });
+    // }
 
     try {
         //check if email exists in DB
@@ -140,7 +140,7 @@ exports.getUserDetails = async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-    const { fullName, email } = req.body;
+    const { firstName, lastName, email } = req.body;
     const userId = req.user.id;
     try {
         const user = await Users.findById(userId);
@@ -153,10 +153,12 @@ exports.updateProfile = async (req, res) => {
                 return res.status(400).json({ msg: 'Email already in use' });
             }
         }
-        user.fullName = fullName || user.fullName;
+        user.firstName = firstName || user.firstName;
+        user.lastName = lastName || user.lastName;
+
         //   user.email = email || user.email;
         await user.save();
-        res.status(200).json({ msg: 'Profile updated successfully', user: { fullName: user.fullName, email: user.email } });
+        res.status(200).json({ msg: 'Profile updated successfully', user: { firstName: user.firstName, email: user.email } });
     } catch (error) {
         res.status(500).json({ msg: 'Server error', error: error.message });
     }

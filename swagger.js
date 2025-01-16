@@ -11,14 +11,14 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:8080', // Replace with your base URL
+        url: 'http://localhost:8080/api/v1', // Replace with your base URL
       },
       {
-        url: 'https://aimortgagebe.onrender.com/'
+        url: 'https://aimortgagebe.onrender.com/api/v1'
       }
     ],
   },
-  apis: ['./routes/*.js'], // Path to your API docs
+  apis: ['./src/routes/*.js'], // Path to your API docs
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
