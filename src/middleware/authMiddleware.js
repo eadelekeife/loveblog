@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 // const Organization = require("../models/Organization");
 const Users = require("../models/userModel");
+const apiResponse = require("../utils/apiResponse");
 
 const protect = async (req, res, next) => {
   let token;
@@ -15,33 +16,35 @@ const protect = async (req, res, next) => {
 
       console.log("Decoded Token:", decoded);
 
-      switch (decoded.accountType) {
-        case "credentialing_organization":
-          req.user = await Organization.findById(decoded.userId).select(
-            "-password"
-          );
-          break;
-        case "provider":
-        default:
-          req.user = await Users.findById(decoded.userId).select("-password");
-          break;
-      }
+      req.user = await Users.findById(decoded.userId).select("-password");
 
       console.log("Found User/Organization:", req.user);
 
       if (!req.user) {
-        return res
-          .status(404)
-          .json({ message: "User or organization not found" });
+        return res.json(apiResponse({
+          success: false,
+          status: 404,
+          message: "User not found",
+          error: ""
+        }))
       }
-
       next();
     } catch (err) {
       console.error("Error during token validation:", err.message);
-      return res.status(401).json({ message: "Token is not valid" });
+      return res.json(apiResponse({
+        success: false,
+        status: 401,
+        message: "Token not valid",
+        error: ""
+      }))
     }
   } else {
-    return res.status(401).json({ message: "Token not provided" });
+    return res.json(apiResponse({
+      success: false,
+      status: 401,
+      message: "Token not provided",
+      error: ""
+    }))
   }
 };
 

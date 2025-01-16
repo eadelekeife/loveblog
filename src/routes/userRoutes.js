@@ -54,7 +54,7 @@ const userRoutes = express.Router();
  *                 example: user
  *                 description: The new user's role
  */
-userRoutes.post("signup-user", userController.signupUser);
+userRoutes.post("/signup", userController.signupUser);
 /**
  * @swagger
  * /users/signin:
@@ -88,7 +88,7 @@ userRoutes.post("signup-user", userController.signupUser);
  *                 example: securepassword123
  *                 description: The user's password
  */
-userRoutes.post("signin-user", userController.login);
+userRoutes.post("/signin", userController.login);
 /**
  * @swagger
  * /users/forgot-password:
@@ -148,7 +148,7 @@ userRoutes.post('/forgot-password', userController.forgotPassword);
 userRoutes.post('/reset-password', userController.resetPassword);
 /**
  * @swagger
- * /users/resend-otp/:email:
+ * /users/resend-otp:
  *   post:
  *     tags:
  *       - Users
@@ -168,7 +168,36 @@ userRoutes.post('/reset-password', userController.resetPassword);
  *                 example: johndoe@example.com
  *                 description: The user's email address
  */
-userRoutes.get('/resend-otp/:email', userController.resendOtp);
+userRoutes.post('/resend-otp', userController.resendOtp);
+
+/**
+ * @swagger
+ * /users/verify-user:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Verify new user
+ *     description: Verify new user with OTP sent to mail
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - otp
+ *               - email
+ *             properties:
+ *               otp:
+ *                 type: string
+ *                 example: 293732
+ *                 description: OTP that was sent to user email
+ *               email:
+ *                 type: string
+ *                 example: johndoe@example.com
+ *                 description: The user's email address
+ */
+userRoutes.post('/verify-user', userController.verifyUser);
 // userRoutes.get('/users', userController.getUserDetails);
 /**
  * @swagger
