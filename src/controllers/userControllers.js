@@ -23,7 +23,6 @@ exports.signupUser = async (req, res) => {
             let hashPassword = "";
             hashPassword = await bcrypt.hash(password, 10);
             user = new Users({
-                role,
                 firstName,
                 lastName,
                 email,
@@ -138,8 +137,7 @@ exports.login = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
-                isVerified: user.isVerified,
-                role: user.role
+                isVerified: user.isVerified
             }
         }))
     } catch (error) {
