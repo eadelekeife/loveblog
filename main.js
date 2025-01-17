@@ -14,5 +14,5 @@ app.use("/api/v1", appRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 app.listen(port, console.log("App has started listening on port", port));

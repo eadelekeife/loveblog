@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 const apiResponse = require('../utils/apiResponse');
 
 exports.signupUser = async (req, res) => {
-    const { role, firstName, lastName, email, password } = req.body;
-    if (role, firstName, lastName, email) {
+    const { firstName, lastName, email, password } = req.body;
+    if (firstName, lastName, email, password) {
         try {
             //check if email exists in DB
             let user = await Users.findOne({ email });
@@ -21,15 +21,13 @@ exports.signupUser = async (req, res) => {
             };
             //email does not exist
             let hashPassword = "";
-            if (password) {
-                hashPassword = await bcrypt.hash(password, 10);
-            }
+            hashPassword = await bcrypt.hash(password, 10);
             user = new Users({
                 role,
                 firstName,
                 lastName,
                 email,
-                password: hashPassword.length ? hashPassword : '',
+                password: hashPassword
             });
 
             user.signupOTP = generateOtp();

@@ -11,10 +11,10 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:8080/api/v1', // Replace with your base URL
+        url: 'https://loveblog.onrender.com/api/v1'
       },
       {
-        url: 'https://aimortgagebe.onrender.com/api/v1'
+        url: 'http://localhost:8000/api/v1', // Replace with your base URL
       }
     ],
   },

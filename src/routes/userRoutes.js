@@ -30,7 +30,6 @@ const userRoutes = express.Router();
  *               - lastName
  *               - email
  *               - password
- *               - role
  *             properties:
  *               firstName:
  *                 type: string
@@ -49,10 +48,6 @@ const userRoutes = express.Router();
  *                 format: password
  *                 example: securepassword123
  *                 description: The user's password
- *               role:
- *                 type: string
- *                 example: user
- *                 description: The new user's role
  */
 userRoutes.post("/signup", userController.signupUser);
 /**
